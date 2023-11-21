@@ -305,6 +305,9 @@ static inline uint64
 r_tp()
 {
   uint64 x;
+  // asm volatile 是告诉编译器不要优化这段代码，并且保持代码的执行顺序。
+  // tp 是 RISC-V 架构的一个特殊寄存器，用于存储线程指针（Thread Pointer）的值
+  // 语法：mv rd, rs
   asm volatile("mv %0, tp" : "=r" (x) );
   return x;
 }
@@ -362,5 +365,7 @@ sfence_vma()
 // that have the high bit set.
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
 
+// 页表项（Page Table Entry）
 typedef uint64 pte_t;
+// 页表（Page Table），其中每个页表项都是一个 uint64 类型的值。
 typedef uint64 *pagetable_t; // 512 PTEs
