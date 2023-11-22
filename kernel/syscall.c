@@ -164,10 +164,8 @@ syscall(void) {
     struct proc *p = myproc();
 
     num = p->trapframe->a7;
-    printf(" sysnames[num]:%s\n", sysnames[num]);
     if (num > 0 && num < NELEM(syscalls) && syscalls[num]) {
         p->trapframe->a0 = syscalls[num]();
-        printf(" -> %d ->%d\n",p->tracemask,1 << num);
         if (p->tracemask & (1 << num)){
             printf("%d: syscall %s -> %d\n", p->pid, sysnames[num], p->trapframe->a0);
         }
