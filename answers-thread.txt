@@ -1,0 +1,12 @@
+[假设键 k1、k2 属于同个 bucket]
+
+thread 1: 尝试设置 k1
+thread 1: 发现 k1 不存在，尝试在 bucket 末尾插入 k1
+--- scheduler 切换到 thread 2
+thread 2: 尝试设置 k2
+thread 2: 发现 k2 不存在，尝试在 bucket 末尾插入 k2
+thread 2: 分配 entry，在桶末尾插入 k2
+--- scheduler 切换回 thread 1
+thread 1: 分配 entry，没有意识到 k2 的存在，在其认为的 “桶末尾”（实际为 k2 所处位置）插入 k1
+
+[k1 被插入，但是由于被 k1 覆盖，k2 从桶中消失了，引发了键值丢失]
